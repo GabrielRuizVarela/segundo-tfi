@@ -51,13 +51,10 @@ void Iniciarsesion()
             printf("Usuario y contrase�a correctos\n");
             break;
         }
-        else
-        {
-            printf("Usuario y contrase�a incorrectos\n");
-            exit (1);
-        }
     }
-    fclose(file);    
+    fclose(file);
+    printf("Usuario y contrase�a incorrectos\n");
+    exit(1);
     printf("Bienvenido a nuestro sistema..\n");
 }
 void registrarUsuario()
