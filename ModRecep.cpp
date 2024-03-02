@@ -123,7 +123,10 @@ void guardar_usuarios(Usuario *usuarios, int contador, const char *archivo) {
 void cargar_usuarios(Usuario *usuarios, int *contador, const char *archivo) {
     FILE *file = fopen(archivo, "rb");
     if (file == NULL) {
-        printf("Error al abrir el archivo %s.\n", archivo);
+        file = fopen(archivo, "wb");
+        if (file == NULL) {
+            printf("Error al abrir el archivo %s.\n", archivo);
+        }
         *contador = 0; // Asegurar que el contador es 0 si el archivo no existe
         return;
     }
@@ -144,7 +147,10 @@ void guardar_pacientes(Paciente *pacientes, int contador, const char *archivo) {
 void cargar_pacientes(Paciente *pacientes, int *contador, const char *archivo) {
     FILE *file = fopen(archivo, "rb");
     if (file == NULL) {
-        printf("Error al abrir el archivo %s para cargar.\n", archivo);
+        file = fopen(archivo, "wb");
+        if (file == NULL) {
+            printf("Error al abrir el archivo %s para cargar.\n", archivo);
+        }
         *contador = 0; // Asegurar que el contador es 0 si el archivo no existe
         return;
     }
@@ -165,7 +171,11 @@ void guardar_turnos(Turno *turnos, int contador, const char *archivo) {
 void cargar_turnos(Turno *turnos, int *contador, const char *archivo) {
     FILE *file = fopen(archivo, "rb");
     if (file == NULL) {
-        printf("Error al abrir el archivo %s para cargar.\n", archivo);
+        // crea el archivo si no existe
+        file = fopen(archivo, "wb");
+        if (file == NULL) {
+            printf("Error al abrir el archivo %s para cargar.\n", archivo);
+        }
         *contador = 0; // Asegurar que el contador es 0 si el archivo no existe
         return;
     }
