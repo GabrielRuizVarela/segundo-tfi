@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "estructuras.h"
+
 struct Fecha
 {
     int anio;
@@ -25,7 +27,7 @@ struct registro
     float talla;
     int Telefono;
 };
-struct registro res[60];
+Usuario res[60];
 void Iniciarsesion()
 {
     char usuario[100], contrasenia[100];
@@ -43,14 +45,12 @@ void Iniciarsesion()
         printf("Error al abrir el archivo");
         exit(1);
     }
-    fread(&res[0], sizeof(struct registro), 1, file);
-    bool encontrado = false;
-    while (!feof(file))
+    int encontrado = 0;
+    while (fread(&res[0], sizeof(Usuario), 1, file))
     {
-        if (strcmp(usuario, res[0].ApeNomP) == 0 && strcmp(contrasenia, res[0].Domicilio) == 0)
+        if (strcmp(usuario, res[0].usuario) == 0 && strcmp(contrasenia, res[0].contrasenia) == 0)
         {
-            printf("Usuario y contrase�a correctos\n");
-            encontrado = true;
+            encontrado = 1;
             break;
         }
     }
