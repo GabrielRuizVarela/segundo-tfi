@@ -60,6 +60,7 @@ typedef struct
     char apellido[MAX_NOMBRE_LENGTH];
     char dni[MAX_NOMBRE_LENGTH];
     char domicilio[MAX_NOMBRE_LENGTH];
+    char localidad[MAX_NOMBRE_LENGTH];
     char peso[MAX_NOMBRE_LENGTH];
     char talla[MAX_NOMBRE_LENGTH];
     char fecha[MAX_NOMBRE_LENGTH];
@@ -67,7 +68,16 @@ typedef struct
 
 typedef struct
 {
+    char name[MAX_NOMBRE_LENGTH];
+    char apellido[MAX_NOMBRE_LENGTH];
+    char dni[MAX_NOMBRE_LENGTH];
+    char domicilio[MAX_NOMBRE_LENGTH];
+    char telefono[MAX_NOMBRE_LENGTH];
+} Profesional;
+
+typedef struct
+{
     char profesional[MAX_NOMBRE_LENGTH];
     char paciente[MAX_NOMBRE_LENGTH];
-    char date[MAX_NOMBRE_LENGTH];
-} Datos;
+    char fecha[MAX_NOMBRE_LENGTH];
+} Turno;

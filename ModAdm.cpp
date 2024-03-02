@@ -327,7 +327,7 @@ int menu()
     return opcion;
 }
 
-main()
+int main()
 {
     const char *password;
     const char *username;
