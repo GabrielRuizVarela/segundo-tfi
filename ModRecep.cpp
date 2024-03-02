@@ -13,18 +13,18 @@
 
 
 Usuario us[MAX_USUARIO];
-int contadorusuario = 0;
+int contador_usuario = 0;
 
 Paciente pa[MAX_PACIENTE];
-int contadorpaciente = 0;
+int contador_paciente = 0;
 
 Datos da[MAX_DATOS];
-int contadordatos = 0;
+int contador_datos = 0;
 
 // Funci�n para verificar el usuario y la contrasena
-int verificarusuario(const char *username, const char *password)
+int verificar_usuario(const char *username, const char *password)
 {
-    for (int i = 0; i < contadorusuario; i++)
+    for (int i = 0; i < contador_usuario; i++)
     {
         if (strcmp(us[i].usuario, username) == 0 && strcmp(us[i].contrasenia, password) == 0)
         {
@@ -35,7 +35,7 @@ int verificarusuario(const char *username, const char *password)
 }
 
 // Funci�n para iniciar sesion
-void iniciarsesion()
+void iniciar_sesion()
 {
     char usuario[MAX_NOMBRE_USUARIO_LENGTH];
     char contrasenia[MAX_CONTRASENIA_LENGTH];
@@ -55,7 +55,7 @@ void iniciarsesion()
     }
     else
     {
-        int rol = verificarusuario(usuario, contrasenia);
+        int rol = verificar_usuario(usuario, contrasenia);
 
         if (rol > 0)
         {
@@ -73,7 +73,7 @@ void iniciarsesion()
 }
 
 // Funci�n para guardar datos en un archivo.
-void guardardatos()
+void guardar_datos()
 {
     FILE *file = fopen("data.txt", "w");
     if (file == NULL)
@@ -81,20 +81,20 @@ void guardardatos()
         printf("Error al abrir el archivo para guardar datos.\n");
         exit(1);
     }
-    fprintf(file, "%d\n", contadorusuario);
-    for (int i = 0; i < contadorusuario; i++)
+    fprintf(file, "%d\n", contador_usuario);
+    for (int i = 0; i < contador_usuario; i++)
     {
         fprintf(file, "%s %s %d\n", us[i].usuario, us[i].contrasenia, us[i].rol);
     }
 
-    fprintf(file, "%d\n", contadorpaciente);
-    for (int i = 0; i < contadorpaciente; i++)
+    fprintf(file, "%d\n", contador_paciente);
+    for (int i = 0; i < contador_paciente; i++)
     {
         fprintf(file, "%s %s %s %s %s %s %s\n", pa[i].name, pa[i].apellido, pa[i].dni, pa[i].domicilio, pa[i].peso, pa[i].talla, pa[i].fecha);
     }
 
-    fprintf(file, "%d\n", contadordatos);
-    for (int i = 0; i < contadordatos; i++)
+    fprintf(file, "%d\n", contador_datos);
+    for (int i = 0; i < contador_datos; i++)
     {
         fprintf(file, "%s %s %s\n", da[i].profesional, da[i].paciente, da[i].date);
     }
@@ -102,76 +102,76 @@ void guardardatos()
 }
 
 // Funci�n para agregar un nuevo paciente.
-void agregarpaciente()
+void agregar_paciente()
 {
-    if (contadorpaciente >= MAX_PACIENTE)
+    if (contador_paciente >= MAX_PACIENTE)
     {
         printf("No se pueden agregar mas pacientes. Limite alcanzado.\n");
     }
     printf("\nIngrese el nombre del paciente: ");
     getchar(); // Consumir el salto de l�nea pendiente del buffer
-    fgets(pa[contadorpaciente].name, MAX_NOMBRE_LENGTH, stdin);
-    pa[contadorpaciente].name[strcspn(pa[contadorpaciente].name, "\n")] = '\0'; // Eliminar el salto de l�nea al final
+    fgets(pa[contador_paciente].name, MAX_NOMBRE_LENGTH, stdin);
+    pa[contador_paciente].name[strcspn(pa[contador_paciente].name, "\n")] = '\0'; // Eliminar el salto de l�nea al final
 
     printf("Ingrese el apellido del paciente: ");
-    fgets(pa[contadorpaciente].apellido, MAX_NOMBRE_LENGTH, stdin);
-    pa[contadorpaciente].apellido[strcspn(pa[contadorpaciente].apellido, "\n")] = '\0'; // Eliminar el salto de l�nea al final
+    fgets(pa[contador_paciente].apellido, MAX_NOMBRE_LENGTH, stdin);
+    pa[contador_paciente].apellido[strcspn(pa[contador_paciente].apellido, "\n")] = '\0'; // Eliminar el salto de l�nea al final
 
     printf("Ingrese el DNI del paciente: ");
-    fgets(pa[contadorpaciente].dni, MAX_NOMBRE_LENGTH, stdin);
-    pa[contadorpaciente].dni[strcspn(pa[contadorpaciente].dni, "\n")] = '\0'; // Eliminar el salto de l�nea al final
+    fgets(pa[contador_paciente].dni, MAX_NOMBRE_LENGTH, stdin);
+    pa[contador_paciente].dni[strcspn(pa[contador_paciente].dni, "\n")] = '\0'; // Eliminar el salto de l�nea al final
 
     printf("Ingrese el domicilio del paciente: ");
-    fgets(pa[contadorpaciente].domicilio, MAX_NOMBRE_LENGTH, stdin);
-    pa[contadorpaciente].domicilio[strcspn(pa[contadorpaciente].domicilio, "\n")] = '\0'; // Eliminar el salto de l�nea al final
+    fgets(pa[contador_paciente].domicilio, MAX_NOMBRE_LENGTH, stdin);
+    pa[contador_paciente].domicilio[strcspn(pa[contador_paciente].domicilio, "\n")] = '\0'; // Eliminar el salto de l�nea al final
 
     printf("Ingrese el peso del paciente: ");
-    fgets(pa[contadorpaciente].peso, MAX_NOMBRE_LENGTH, stdin);
-    pa[contadorpaciente].peso[strcspn(pa[contadorpaciente].peso, "\n")] = '\0'; // Eliminar el salto de l�nea al final
+    fgets(pa[contador_paciente].peso, MAX_NOMBRE_LENGTH, stdin);
+    pa[contador_paciente].peso[strcspn(pa[contador_paciente].peso, "\n")] = '\0'; // Eliminar el salto de l�nea al final
 
     printf("Ingrese la fecha de ingreso (DD/MM/YYYY): ");
-    fgets(pa[contadorpaciente].fecha, MAX_NOMBRE_LENGTH, stdin);
-    pa[contadorpaciente].fecha[strcspn(pa[contadorpaciente].fecha, "\n")] = '\0'; // Eliminar el salto de l�nea al final
+    fgets(pa[contador_paciente].fecha, MAX_NOMBRE_LENGTH, stdin);
+    pa[contador_paciente].fecha[strcspn(pa[contador_paciente].fecha, "\n")] = '\0'; // Eliminar el salto de l�nea al final
 
-    contadorpaciente++;
+    contador_paciente++;
 
     printf("Paciente registrado con exito.\n");
 }
 
 // Funci�n para agregar un nuevo turno.
-void agregarturno()
+void agregar_turno()
 {
     char nombre[30];
     char profesional[MAX_NOMBRE_LENGTH];
-    int indiceprofesional;
+    int indice_profesional;
     printf("\nIngrese el nombre de usuario del profesional de la salud (medico): ");
     scanf("%s", nombre);
     getchar();
 
-    if (indiceprofesional == -1)
+    if (indice_profesional == -1)
     {
         printf("Profesional de la salud no encontrado o no es un medico valido.\n");
         exit(1);
     }
 
-    strcpy(da[contadordatos].profesional, us[indiceprofesional].usuario);
+    strcpy(da[contador_datos].profesional, us[indice_profesional].usuario);
 
     printf("Ingrese el nombre del paciente: ");
     getchar();
-    fgets(da[contadordatos].paciente, MAX_NOMBRE_LENGTH, stdin);
-    da[contadordatos].paciente[strcspn(da[contadordatos].paciente, "\n")] = '\0'; // Eliminar el salto de l�nea al final
+    fgets(da[contador_datos].paciente, MAX_NOMBRE_LENGTH, stdin);
+    da[contador_datos].paciente[strcspn(da[contador_datos].paciente, "\n")] = '\0'; // Eliminar el salto de l�nea al final
 
     printf("Ingrese la fecha del turno: ");
-    fgets(da[contadordatos].date, MAX_NOMBRE_LENGTH, stdin);
-    da[contadordatos].date[strcspn(da[contadordatos].date, "\n")] = '\0'; // Eliminar el salto de l�nea al final
+    fgets(da[contador_datos].date, MAX_NOMBRE_LENGTH, stdin);
+    da[contador_datos].date[strcspn(da[contador_datos].date, "\n")] = '\0'; // Eliminar el salto de l�nea al final
 
-    contadordatos++;
+    contador_datos++;
 
     printf("Turno registrado con exito.\n");
 }
 
 // Funci�n para generar un informe de pacientes atendidos por un profesional en una fecha espec�fica.
-void generarinforme()
+void generar_informe()
 {
     char profesional[MAX_NOMBRE_LENGTH];
     char fecha[MAX_NOMBRE_LENGTH];
@@ -185,7 +185,7 @@ void generarinforme()
     printf("\nInforme de pacientes atendidos el %s por el profesional %s:\n", fecha, profesional);
 
     int bandera = 0;
-    for (int i = 0; i < contadordatos; i++)
+    for (int i = 0; i < contador_datos; i++)
     {
         if (strcmp(da[i].profesional, profesional) == 0 &&
             strcmp(da[i].date, fecha) == 0)
@@ -214,7 +214,7 @@ int main()
             printf("\n=========================\n");
             printf("Modulo del recepcionista\n");
             printf("=========================\n");
-            iniciarsesion(); // Se solicita el inicio de sesion
+            iniciar_sesion(); // Se solicita el inicio de sesion
             logeado = 1;     // Cambiar la bandera a indicar que ha iniciado sesion
         }
         else
@@ -235,17 +235,17 @@ int main()
             {
             case 1:
             {
-                agregarpaciente();
+                agregar_paciente();
                 break;
             }
             case 2:
             {
-                agregarturno();
+                agregar_turno();
                 break;
             }
             case 3:
             {
-                generarinforme();
+                generar_informe();
                 break;
             }
             case 0:
@@ -261,6 +261,6 @@ int main()
             }
         }
     } while (opcion != 0);
-    guardardatos();
+    guardar_datos();
     return 0;
 }
