@@ -70,10 +70,12 @@ typedef struct
 {
     char name[MAX_NOMBRE_LENGTH];
     char apellido[MAX_NOMBRE_LENGTH];
+    char contrasenia[MAX_CONTRASENIA_LENGTH];
     char dni[MAX_NOMBRE_LENGTH];
     char domicilio[MAX_NOMBRE_LENGTH];
     char telefono[MAX_NOMBRE_LENGTH];
 } Profesional;
+
 
 typedef struct
 {

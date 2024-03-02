@@ -3,12 +3,7 @@
 #include <stdio.h>
 #include <ctype.h>
 
-struct Usuario
-{
-    char nombre[10];
-    char password[10];
-    char ApellidoYNombre[60];
-};
+#include "estructuras.h"
 
 struct Atencion
 {
@@ -21,10 +16,34 @@ struct Atencion
 struct Atencion atenciones[100];
 int cantidadAtenciones = 0;
 
-void validarUsuarioContrasenia()
+void registrarUsuario(const char *archivo, const char *usuario, const char *contrasenia, int rol)
 {
-    char usuario[100];
-    char contrasenia[100];
+    // Abre el archivo en modo de escritura binaria.
+    FILE *file = fopen(archivo, "a+b");
+    if (file == NULL)
+    {
+        file = fopen(archivo, "w+b");
+        if (file == NULL)
+        {
+            printf("Error al abrir el archivo");
+        }
+    }
+
+    // Escribe el usuario en el archivo.
+    Usuario u;
+    strcpy(u.usuario, usuario);
+    strcpy(u.contrasenia, contrasenia);
+    u.rol = rol;
+    fwrite(&u, sizeof(Usuario), 1, file);
+
+    // Cierra el archivo.
+    fclose(file);
+}
+
+void validarUsuarioContrasenia(int rol)
+{
+    char usuario[50];
+    char contrasenia[50];
     // Dentro de validarUsuarioContrasenia, despu�s de obtener el nombre de usuario y antes del ciclo while:
     int simbolos_usuario = 0; // Nueva variable para contar los s�mbolos permitidos en el nombre de usuario.
 
@@ -178,61 +197,35 @@ void validarUsuarioContrasenia()
             break; // Rompe el ciclo si todas las condiciones son correctas.
         }
     }
-}
-
-void registrarUsuario(const char *archivo, const Usuario *usuario)
-{
-    FILE *file = fopen("archivo", "a+b");
-    if (file == NULL)
-    {
-        printf("Error al abrir el archivo");
-    }
-
-    fwrite(usuario, sizeof(Usuario), 1, file);
-
-    fclose(file);
+    registrarUsuario("usuarios.dat", usuario, contrasenia, 2);
 }
 
 void registrarAtencion()
 {
-    int respuesta;
-    printf("Para crear un nuevo Usuario de Profesional,ingrese (1)\nPara registrar la atencion ingrese (2): ");
-    scanf("%d", &respuesta);
 
-    if (respuesta == 1)
+    printf("Ingrese el nombre del profesional que realizo la atencion: ");
+    fflush(stdin);
+    scanf("%s", atenciones[cantidadAtenciones].nombreProfesional);
+
+    printf("Ingrese el mes (1-12): ");
+    scanf("%d", &atenciones[cantidadAtenciones].mes);
+
+    printf("Ingrese la cantidad de atenciones: ");
+    scanf("%d", &atenciones[cantidadAtenciones].cantidadAtenciones);
+
+    cantidadAtenciones++;
+
+    FILE *archivo = fopen("atenciones.dat", "w+b");
+    if (archivo == NULL)
     {
-
-        validarUsuarioContrasenia();
+        printf("Error al abrir el archivo para escritura");
+        exit(1);
     }
+    fwrite(&cantidadAtenciones, sizeof(int), 1, archivo);
+    fwrite(atenciones, sizeof(struct Atencion), cantidadAtenciones, archivo);
 
-    else if (respuesta == 2)
-    {
-        printf("Ingrese el nombre del profesional que realizo la atencion: ");
-        fflush(stdin);
-        scanf("%s", atenciones[cantidadAtenciones].nombreProfesional);
-
-        printf("Ingrese el mes (1-12): ");
-        scanf("%d", &atenciones[cantidadAtenciones].mes);
-
-        printf("Ingrese la cantidad de atenciones: ");
-        scanf("%d", &atenciones[cantidadAtenciones].cantidadAtenciones);
-
-        cantidadAtenciones++;
-
-        FILE *archivo = fopen("atenciones.dat", "w+b");
-        if (archivo == NULL)
-        {
-            printf("Error al abrir el archivo para escritura");
-            exit(1);
-        }
-        fwrite(&cantidadAtenciones, sizeof(int), 1, archivo);
-        fwrite(atenciones, sizeof(struct Atencion), cantidadAtenciones, archivo);
-
-        fclose(archivo);
-        printf("Atencion registrada correctamente.\n");
-        printf("Desea registrar otra atencion (1-si || 2-no): ");
-        scanf("%d", &respuesta);
-    }
+    fclose(archivo);
+    printf("Atencion registrada correctamente.\n");
 }
 
 void atencionesPorProfesional()
@@ -340,12 +333,12 @@ int main()
         {
         case 1:
         {
-            registrarAtencion();
+            validarUsuarioContrasenia(1);
             break;
         }
         case 2:
         {
-            validarUsuarioContrasenia();
+            validarUsuarioContrasenia(2);
             break;
         }
         case 3:
