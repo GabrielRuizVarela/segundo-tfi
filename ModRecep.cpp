@@ -197,25 +197,7 @@ void agregar_paciente()
     fgets(nuevoPaciente.name, MAX_NOMBRE_LENGTH, stdin);
     nuevoPaciente.name[strcspn(nuevoPaciente.name, "\n")] = '\0'; // Eliminar el salto de línea al final
 
-    Paciente nuevoPaciente;
-    printf("\nIngrese el DNI del paciente: ");
-    getchar(); // Consumir el salto de línea pendiente del buffer
-    fgets(nuevoPaciente.dni, MAX_NOMBRE_LENGTH, stdin);
-    nuevoPaciente.dni[strcspn(nuevoPaciente.dni, "\n")] = '\0'; // Eliminar el salto de línea al final
-
-    if (verificar_paciente_existente(nuevoPaciente.dni))
-    {
-        printf("Error: Ya existe un paciente con el mismo DNI.\n");
-        return;
-    }
-
-    printf("Ingrese el nombre del paciente: ");
-    fgets(nuevoPaciente.name, MAX_NOMBRE_LENGTH, stdin);
-    nuevoPaciente.name[strcspn(nuevoPaciente.name, "\n")] = '\0'; // Eliminar el salto de línea al final
-
     printf("Ingrese el apellido del paciente: ");
-    fgets(nuevoPaciente.apellido, MAX_NOMBRE_LENGTH, stdin);
-    nuevoPaciente.apellido[strcspn(nuevoPaciente.apellido, "\n")] = '\0'; // Eliminar el salto de línea al final
     fgets(nuevoPaciente.apellido, MAX_NOMBRE_LENGTH, stdin);
     nuevoPaciente.apellido[strcspn(nuevoPaciente.apellido, "\n")] = '\0'; // Eliminar el salto de línea al final
 
@@ -230,23 +212,17 @@ void agregar_paciente()
     printf("Ingrese el peso del paciente: ");
     fgets(nuevoPaciente.peso, MAX_NOMBRE_LENGTH, stdin);
     nuevoPaciente.peso[strcspn(nuevoPaciente.peso, "\n")] = '\0'; // Eliminar el salto de línea al final
-    fgets(nuevoPaciente.peso, MAX_NOMBRE_LENGTH, stdin);
-    nuevoPaciente.peso[strcspn(nuevoPaciente.peso, "\n")] = '\0'; // Eliminar el salto de línea al final
 
     printf("Ingrese la fecha de ingreso (DD/MM/YYYY): ");
     fgets(nuevoPaciente.fecha, MAX_NOMBRE_LENGTH, stdin);
     nuevoPaciente.fecha[strcspn(nuevoPaciente.fecha, "\n")] = '\0'; // Eliminar el salto de línea al final
-    fgets(nuevoPaciente.fecha, MAX_NOMBRE_LENGTH, stdin);
-    nuevoPaciente.fecha[strcspn(nuevoPaciente.fecha, "\n")] = '\0'; // Eliminar el salto de línea al final
 
-    pa[contador_paciente] = nuevoPaciente;
     pa[contador_paciente] = nuevoPaciente;
     contador_paciente++;
     guardar_pacientes(pa, contador_paciente, "pacientes.dat");
     printf("Paciente registrado con exito.\n");
 }
 
-// Funcion para agregar un nuevo turno.
 // Funcion para agregar un nuevo turno.
 void agregar_turno()
 {
@@ -262,9 +238,6 @@ void agregar_turno()
     scanf("%s", nuevoTurno.profesional);
     getchar();
 
-    // Validar la existencia del profesional
-    int indiceProfesional = buscar_indice_profesional(nuevoTurno.profesional);
-    if (indiceProfesional == -1)
     // Validar la existencia del profesional
     int indiceProfesional = buscar_indice_profesional(nuevoTurno.profesional);
     if (indiceProfesional == -1)
@@ -290,7 +263,6 @@ void agregar_turno()
     fgets(da[contador_datos].paciente, MAX_NOMBRE_LENGTH, stdin);
     da[contador_datos].paciente[strcspn(da[contador_datos].paciente, "\n")] = '\0'; // Eliminar el salto de l�nea al final
 
-    da[contador_datos] = nuevoTurno; // Agregar el nuevo turno
     da[contador_datos] = nuevoTurno; // Agregar el nuevo turno
     contador_datos++;
     guardar_turnos(da, contador_datos, "turnos.dat");
@@ -346,7 +318,6 @@ int main()
             printf("Modulo del recepcionista\n");
             printf("=========================\n");
             iniciar_sesion(); // Se solicita el inicio de sesion
-            logeado = 1;      // Cambiar la bandera a indicar que ha iniciado sesion
             logeado = 1;      // Cambiar la bandera a indicar que ha iniciado sesion
         }
         else
