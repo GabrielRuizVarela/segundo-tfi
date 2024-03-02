@@ -189,7 +189,14 @@ void validarUsuarioContrasenia(int rol)
             break; // Rompe el ciclo si todas las condiciones son correctas.
         }
     }
-    registrarUsuario("usuarios.dat", usuario, contrasenia, 2);
+    if (rol == 1)
+    {
+        registrarUsuario("profesionales.dat", usuario, contrasenia, rol);
+    }
+    else
+    {
+        registrarUsuario("recepcionistas.dat", usuario, contrasenia, rol);
+    }
 }
 
 void registrarAtencion()

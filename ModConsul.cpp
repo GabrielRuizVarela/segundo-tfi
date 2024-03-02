@@ -39,7 +39,7 @@ void Iniciarsesion()
     printf("Ingrese contrase�a : ");
     scanf("%s", contrasenia);
 
-    FILE *file = fopen("usuarios.dat", "rb");
+    FILE *file = fopen("profesionales.dat", "rb");
     if (file == NULL)
     {
         printf("Error al abrir el archivo");

@@ -313,7 +313,7 @@ void generar_informe()
 
 int main()
 {
-    cargar_usuarios(us, &contador_usuario, "usuarios.dat");
+    cargar_usuarios(us, &contador_usuario, "recepcionistas.dat");
     cargar_pacientes(pa, &contador_paciente, "pacientes.dat");
     cargar_turnos(da, &contador_datos, "turnos.dat");
     int opcion;
