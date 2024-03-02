@@ -44,18 +44,26 @@ void Iniciarsesion()
         exit(1);
     }
     fread(&res[0], sizeof(struct registro), 1, file);
+    bool encontrado = false;
     while (!feof(file))
     {
         if (strcmp(usuario, res[0].ApeNomP) == 0 && strcmp(contrasenia, res[0].Domicilio) == 0)
         {
             printf("Usuario y contrase�a correctos\n");
+            encontrado = true;
             break;
         }
     }
     fclose(file);
-    printf("Usuario y contrase�a incorrectos\n");
-    exit(1);
-    printf("Bienvenido a nuestro sistema..\n");
+    if (encontrado)
+    {
+        printf("Bienvenido a nuestro sistema..\n");
+    }
+    else
+    {
+        printf("Usuario y contrase�a incorrectos\n");
+        exit(1);
+    }
 }
 void registrarUsuario()
 {
