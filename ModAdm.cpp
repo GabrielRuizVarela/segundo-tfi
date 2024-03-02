@@ -5,14 +5,6 @@
 
 #include "estructuras.h"
 
-struct Atencion
-{
-    char nombreProfesional[50];
-    char nombreRegistro[50];
-    int mes;
-    int cantidadAtenciones;
-};
-
 struct Atencion atenciones[100];
 int cantidadAtenciones = 0;
 

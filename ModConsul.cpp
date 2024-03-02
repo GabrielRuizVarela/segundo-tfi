@@ -37,25 +37,27 @@ void Iniciarsesion()
     printf("Ingrese contrase�a : ");
     scanf("%s", contrasenia);
 
-    int longitud_usuario = strlen(usuario);
-    int longitud_contrasenia = strlen(contrasenia);
-    if (longitud_usuario < 6 || longitud_usuario > 10 || usuario[0] < 'A' || usuario[0] <= 'Z')
+    FILE *file = fopen("usuarios.dat", "rb");
+    if (file == NULL)
     {
-        printf("Error: El nombre de usuario no cumple con las condiciones.\n");
-        printf("Reingrese nombre de usuario: ");
-        scanf("%s", usuario);
+        printf("Error al abrir el archivo");
+        exit(1);
     }
-    for (i = 0; i < longitud_contrasenia; i++)
+    fread(&res[0], sizeof(struct registro), 1, file);
+    while (!feof(file))
     {
-        if (longitud_contrasenia < 6 || longitud_contrasenia > 32 || (contrasenia[i] >= 33 && contrasenia[i] <= 47) ||
-            (contrasenia[i] >= 58 && contrasenia[i] <= 64) || (contrasenia[i] >= 91 && contrasenia[i] <= 96) ||
-            (contrasenia[i] >= 123 && contrasenia[i] <= 126) || (contrasenia[i] == 32) || (contrasenia[i] >= 128 && contrasenia[i] <= 255))
+        if (strcmp(usuario, res[0].ApeNomP) == 0 && strcmp(contrasenia, res[0].Domicilio) == 0)
         {
-            printf("Error: La contrasenia no cumple con las condiciones.\n");
-            printf("Reingrese la contrasenia: ");
-            scanf("%s", contrasenia);
+            printf("Usuario y contrase�a correctos\n");
+            break;
+        }
+        else
+        {
+            printf("Usuario y contrase�a incorrectos\n");
+            exit (1);
         }
     }
+    fclose(file);    
     printf("Bienvenido a nuestro sistema..\n");
 }
 void registrarUsuario()

@@ -16,13 +16,13 @@
 //     char nombre[50];
 //     char password[64];
 // };
-// struct Atencion
-// {
-//     char nombreProfesional[50];
-//     char nombreRegistro[50];
-//     int mes;
-//     int cantidadAtenciones;
-// };
+struct Atencion
+{
+    char nombreProfesional[50];
+    char nombreRegistro[50];
+    int mes;
+    int cantidadAtenciones;
+};
 // // CONSULTORIO
 // struct Fecha
 // {
