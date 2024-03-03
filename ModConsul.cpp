@@ -15,7 +15,7 @@ Usuario usuarioActual; // Variable global para almacenar el usuario que inició 
 int usuarioLogueado = 0; // 0: no logueado, 1: logueado
 
 Paciente pacientes[MAX_TURNOS]; // Arreglo global de pacientes encontrados
-int cantidadPacientes = 0;       // Contador global de pacientes encontrados
+int cantidadPacientes = 0;      // Contador global de pacientes encontrados
 
 struct Fecha
 {
@@ -150,7 +150,8 @@ void RegistrarHistoria()
     printf("El paciente de documento %d fue registrado en el hospital avellaneda por dolencias en la pierna izquierda\n", documento);
 }
 
-int calcularEdad(const char* fechaNacimiento) {
+int calcularEdad(const char *fechaNacimiento)
+{
     // Obtener la fecha actual
     time_t t = time(NULL);
     struct tm tiempoActual = *localtime(&t);
@@ -174,14 +175,17 @@ int calcularEdad(const char* fechaNacimiento) {
     int edad = tiempoActual.tm_year + 1900 - anioNac;
 
     // Ajustar la edad basándose en si la persona ya cumplió años este año
-    if (mesNac > (tiempoActual.tm_mon + 1) || 
-        (mesNac == (tiempoActual.tm_mon + 1) && diaNac > tiempoActual.tm_mday)) {
+    if (mesNac > (tiempoActual.tm_mon + 1) ||
+        (mesNac == (tiempoActual.tm_mon + 1) && diaNac > tiempoActual.tm_mday))
+    {
         edad--; // Restar un año si no ha cumplido años aún
     }
 
+    // debug print 
+    printf("Fecha de nacimiento: %s\n", fechaNacimiento);
+    printf("Edad: %d\n", edad);
     return edad;
 }
-
 
 void limpiar_buffer()
 {
@@ -224,16 +228,15 @@ void turnos_del_dia()
     }
     else
     {
+        int edad;
         printf("Turnos encontrados para %s en la fecha %s:\n", usuarioActual.usuario, fecha);
         for (int i = 0; i < cantidadTurnos; i++)
         {
-            //buscar con dni del paciente 
+            // buscar con dni del paciente
             for (int j = 0; j < cantidadPacientes; j++)
             {
-                printf("test: %s %s\n", turnosEncontrados[i].dniPaciente, pacientes[j].dni);
                 if (strcmp(turnosEncontrados[i].dniPaciente, pacientes[j].dni) == 0)
                 {
-                    int edad;
                     edad = calcularEdad(pacientes[j].fecha);
                     printf("TURNO %d:\n", i + 1);
                     printf("Paciente: %s %s edad: %s\n", pacientes[j].name, pacientes[j].apellido, edad);
