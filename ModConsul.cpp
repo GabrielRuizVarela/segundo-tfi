@@ -229,6 +229,7 @@ void turnos_del_dia()
             //buscar con dni del paciente 
             for (int j = 0; j < cantidadPacientes; j++)
             {
+                printf("test: %s %s\n", turnosEncontrados[i].dniPaciente, pacientes[j].dni);
                 if (strcmp(turnosEncontrados[i].dniPaciente, pacientes[j].dni) == 0)
                 {
                     int edad;
