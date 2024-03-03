@@ -246,6 +246,7 @@ void turnos_del_dia()
 
 int menu()
 {
+    cargar_pacientes();
     int opcion;
     printf("=========================\n");
     printf("Modulo Consultorio\n");
