@@ -279,6 +279,7 @@ void agregar_turno()
     }
 
     printf("Ingrese la fecha del turno: ");
+    getchar();
     fgets(nuevoTurno.fecha, MAX_NOMBRE_LENGTH, stdin);
     nuevoTurno.fecha[strcspn(nuevoTurno.fecha, "\n")] = '\0'; // Eliminar el salto de línea al final
 
