@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "estructuras.h"
 #define MAX_TURNOS 100 // Un límite arbitrario para la demostración
@@ -12,6 +13,9 @@ int cantidadTurnos = 0;              // Contador global de turnos encontrados
 Usuario usuarioActual; // Variable global para almacenar el usuario que inició sesión
 
 int usuarioLogueado = 0; // 0: no logueado, 1: logueado
+
+Paciente pacientes[MAX_TURNOS]; // Arreglo global de pacientes encontrados
+int cantidadPacientes = 0;       // Contador global de pacientes encontrados
 
 struct Fecha
 {
@@ -31,6 +35,24 @@ struct registro
     int Telefono;
 };
 Usuario res[60];
+
+void cargar_pacientes()
+{
+    FILE *file = fopen("pacientes.dat", "rb");
+    if (file == NULL)
+    {
+        printf("Error al abrir el archivo\n");
+        exit(1);
+    }
+    int encontrado = 0;
+    Paciente tempPaciente; // Variable temporal para leer pacientes del archivo
+    while (fread(&tempPaciente, sizeof(Paciente), 1, file))
+    {
+        pacientes[cantidadPacientes++] = tempPaciente; // Almacenar el paciente encontrado
+    }
+    fclose(file);
+}
+
 void Iniciarsesion()
 {
     char usuario[MAX_NOMBRE_LENGTH], contrasenia[MAX_CONTRASENIA_LENGTH];
@@ -126,6 +148,40 @@ void RegistrarHistoria()
 
     printf("El paciente de documento %d fue registrado en el hospital avellaneda por dolencias en la pierna izquierda\n", documento);
 }
+
+int calcularEdad(const char* fechaNacimiento) {
+    // Obtener la fecha actual
+    time_t t = time(NULL);
+    struct tm tiempoActual = *localtime(&t);
+
+    // Extraer año, mes y día de la fecha de nacimiento
+    char strAnio[5], strMes[3], strDia[3];
+    strncpy(strAnio, fechaNacimiento + 4, 4); // Año está en las posiciones 4 a 7
+    strAnio[4] = '\0';
+
+    strncpy(strMes, fechaNacimiento + 2, 2); // Mes está en las posiciones 2 y 3
+    strMes[2] = '\0';
+
+    strncpy(strDia, fechaNacimiento, 2); // Día está en las posiciones 0 y 1
+    strDia[2] = '\0';
+
+    int anioNac = atoi(strAnio);
+    int mesNac = atoi(strMes);
+    int diaNac = atoi(strDia);
+
+    // Calcular la edad preliminar
+    int edad = tiempoActual.tm_year + 1900 - anioNac;
+
+    // Ajustar la edad basándose en si la persona ya cumplió años este año
+    if (mesNac > (tiempoActual.tm_mon + 1) || 
+        (mesNac == (tiempoActual.tm_mon + 1) && diaNac > tiempoActual.tm_mday)) {
+        edad--; // Restar un año si no ha cumplido años aún
+    }
+
+    return edad;
+}
+
+
 void limpiar_buffer()
 {
     int c;
@@ -170,7 +226,18 @@ void turnos_del_dia()
         printf("Turnos encontrados para %s en la fecha %s:\n", usuarioActual.usuario, fecha);
         for (int i = 0; i < cantidadTurnos; i++)
         {
-            printf("Turno %d: %s\n", i + 1, turnosEncontrados[i].fecha); // Ejemplo de cómo acceder
+            //buscar con dni del paciente 
+            for (int j = 0; j < cantidadPacientes; j++)
+            {
+                if (strcmp(turnosEncontrados[i].dniPaciente, pacientes[j].dni) == 0)
+                {
+                    int edad;
+                    edad = calcularEdad(pacientes[j].fecha);
+                    printf("TURNO %d:\n", i + 1);
+                    printf("Paciente: %s %s edad: %s\n", pacientes[j].name, pacientes[j].apellido, edad);
+                    break;
+                }
+            }
         }
     }
 }
