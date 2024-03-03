@@ -292,7 +292,7 @@ void agregar_turno()
     // Eliminar el salto de línea al final si existe
     nuevoTurno.dniPaciente[strcspn(nuevoTurno.dniPaciente, "\n")] = 0;
 
-    if(verificar_paciente_existente(nuevoTurno.dniPaciente))
+    if(!verificar_paciente_existente(nuevoTurno.dniPaciente))
     {
         printf("Error: El paciente con DNI %s no está registrado.\n", nuevoTurno.dniPaciente);
         return;
