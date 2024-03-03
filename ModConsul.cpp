@@ -4,6 +4,14 @@
 #include <string.h>
 
 #include "estructuras.h"
+#define MAX_TURNOS 100 // Un límite arbitrario para la demostración
+
+Turno turnosEncontrados[MAX_TURNOS]; // Arreglo global de turnos encontrados
+int cantidadTurnos = 0;              // Contador global de turnos encontrados
+
+Usuario usuarioActual; // Variable global para almacenar el usuario que inició sesión
+
+int usuarioLogueado = 0; // 0: no logueado, 1: logueado
 
 struct Fecha
 {
@@ -25,41 +33,44 @@ struct registro
 Usuario res[60];
 void Iniciarsesion()
 {
-    char usuario[100], contrasenia[100];
-    int mayusculas = 0, i;
-    // si quiero corroborar que anda bien hacer fallar usuario no contrase�a
+    char usuario[MAX_NOMBRE_LENGTH], contrasenia[MAX_CONTRASENIA_LENGTH];
     printf("Ingrese nombre de usuario: ");
     scanf("%s", usuario);
 
-    printf("Ingrese contrase�a : ");
+    printf("Ingrese contrase�a: ");
     scanf("%s", contrasenia);
 
     FILE *file = fopen("profesionales.dat", "rb");
     if (file == NULL)
     {
-        printf("Error al abrir el archivo");
+        printf("Error al abrir el archivo\n");
         exit(1);
     }
     int encontrado = 0;
-    while (fread(&res[0], sizeof(Usuario), 1, file))
+    Usuario tempUser; // Variable temporal para leer usuarios del archivo
+    while (fread(&tempUser, sizeof(Usuario), 1, file))
     {
-        if (strcmp(usuario, res[0].usuario) == 0 && strcmp(contrasenia, res[0].contrasenia) == 0)
+        if (strcmp(usuario, tempUser.usuario) == 0 && strcmp(contrasenia, tempUser.contrasenia) == 0)
         {
+            usuarioActual = tempUser; // Almacenar el usuario que inició sesión en la variable global
             encontrado = 1;
+            usuarioLogueado = 1; // Marcar como logueado  
             break;
         }
     }
     fclose(file);
+
     if (encontrado)
     {
-        printf("Bienvenido a nuestro sistema..\n");
+        printf("Bienvenido a nuestro sistema, %s.\n", usuarioActual.usuario);
     }
     else
     {
-        printf("Usuario y contrase�a incorrectos\n");
+        printf("Usuario y contraseña incorrectos\n");
         exit(1);
     }
 }
+
 void registrarUsuario()
 {
     FILE *file = fopen("consultorios.dat", "ab");
@@ -115,15 +126,72 @@ void RegistrarHistoria()
 
     printf("El paciente de documento %d fue registrado en el hospital avellaneda por dolencias en la pierna izquierda\n", documento);
 }
+void limpiar_buffer()
+{
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF)
+    {
+    }
+}
+
+void turnos_del_dia()
+{
+    FILE *file = fopen("turnos.dat", "rb");
+    if (file == NULL)
+    {
+        printf("Error al abrir el archivo\n");
+        exit(1);
+    }
+
+    char fecha[MAX_NOMBRE_LENGTH];
+    printf("Ingrese la fecha del turno a buscar (DDMMYYYY): ");
+    scanf("%s", fecha);
+    limpiar_buffer(); // Limpia el buffer después de usar scanf
+
+    cantidadTurnos = 0; // Reiniciar el contador de turnos
+    Turno turno;
+    while (fread(&turno, sizeof(Turno), 1, file) && cantidadTurnos < MAX_TURNOS)
+    {
+        if (strcmp(fecha, turno.fecha) == 0 && strcmp(usuarioActual.usuario, turno.usuario) == 0)
+        {
+            turnosEncontrados[cantidadTurnos++] = turno; // Almacenar el turno encontrado
+        }
+    }
+
+    fclose(file);
+
+    // Opcional: imprimir los turnos almacenados en la variable global
+    if (cantidadTurnos == 0)
+    {
+        printf("No se encontraron turnos para %s en la fecha %s.\n", usuarioActual.usuario, fecha);
+    }
+    else
+    {
+        printf("Turnos encontrados para %s en la fecha %s:\n", usuarioActual.usuario, fecha);
+        for (int i = 0; i < cantidadTurnos; i++)
+        {
+            printf("Turno %d: %s\n", i + 1, turnosEncontrados[i].fecha); // Ejemplo de cómo acceder
+        }
+    }
+}
+
 int menu()
 {
     int opcion;
     printf("=========================\n");
     printf("Modulo Consultorio\n");
     printf("=========================\n");
-    printf("1- Iniciar sesion\n");
-    printf("2- Visualizar lista de espera de turnos(informe)\n");
-    printf("3- Registrar historia clinica\n");
+    if (!usuarioLogueado)
+    {
+        // Usuario no ha iniciado sesión
+        printf("1- Iniciar sesion\n");
+    }
+    else
+    {
+        // Usuario ha iniciado sesión
+        printf("2- Visualizar lista de espera de turnos (informe)\n");
+        printf("3- Registrar historia clinica\n");
+    }
     printf("0- Cerrar la aplicacion.\n");
     printf("\nIngrese una opcion: ");
     scanf("%d", &opcion);
@@ -137,33 +205,31 @@ int main()
     {
         seleccion = menu();
 
+        if (!usuarioLogueado && seleccion != 1 && seleccion != 0)
+        {
+            printf("Por favor, inicie sesión primero.\n");
+            continue; // Regresa al inicio del ciclo
+        }
+
         switch (seleccion)
         {
         case 1:
-        {
             Iniciarsesion();
             break;
-        }
         case 2:
-        {
-            VisualizarLista();
+            if (usuarioLogueado)
+                VisualizarLista();
             break;
-        }
         case 3:
-        {
-            RegistrarHistoria();
+            if (usuarioLogueado)
+                RegistrarHistoria();
             break;
-        }
         case 0:
-        {
-            printf("Gracias por usar nuestro sistema...");
+            printf("Gracias por usar nuestro sistema...\n");
             break;
-        }
         default:
-        {
-            printf("Opci�n inv�lida");
+            printf("Opción inválida\n");
             break;
-        }
         }
     } while (seleccion != 0);
     return 0;

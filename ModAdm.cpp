@@ -5,7 +5,6 @@
 
 #include "estructuras.h"
 
-struct Atencion atenciones[100];
 int cantidadAtenciones = 0;
 
 void registrarUsuario(const char *archivo, const char *usuario, const char *contrasenia, int rol)
@@ -199,21 +198,27 @@ void validarUsuarioContrasenia(int rol)
     }
 }
 
-void limpiar_buffer() {
+void limpiar_buffer()
+{
     int c;
-    while ((c = getchar()) != '\n' && c != EOF) { }
+    while ((c = getchar()) != '\n' && c != EOF)
+    {
+    }
 }
 
-int extraer_mes(const char* fecha) {
-    char strMes[3]; // Necesitamos solo dos caracteres para el mes, más el carácter nulo
+int extraer_mes(const char *fecha)
+{
+    char strMes[3];                // Necesitamos solo dos caracteres para el mes, más el carácter nulo
     strncpy(strMes, fecha + 2, 2); // Copiamos los caracteres correspondientes al mes
-    strMes[2] = '\0'; // Aseguramos que la cadena esté correctamente terminada
-    return atoi(strMes); // Convertimos la cadena del mes a entero
+    strMes[2] = '\0';              // Aseguramos que la cadena esté correctamente terminada
+    return atoi(strMes);           // Convertimos la cadena del mes a entero
 }
 
-void atencionesPorProfesional() {
+void atencionesPorProfesional()
+{
     FILE *archivo = fopen("turnos.dat", "rb"); // Asegúrate de abrir en modo lectura binaria
-    if (archivo == NULL) {
+    if (archivo == NULL)
+    {
         printf("Error al abrir el archivo para lectura.\n");
         exit(1); // Considera manejar el error de manera diferente para no terminar abruptamente
     }
@@ -231,10 +236,12 @@ void atencionesPorProfesional() {
 
     Turno turno;
 
-    while (fread(&turno, sizeof(Turno), 1, archivo)) {
+    while (fread(&turno, sizeof(Turno), 1, archivo))
+    {
         int mesTurno = extraer_mes(turno.fecha);
 
-        if (strcmp(turno.usuario, usuarioProfesional) == 0 && mes == mesTurno) {
+        if (strcmp(turno.usuario, usuarioProfesional) == 0 && mes == mesTurno)
+        {
             contadorAtenciones++;
         }
     }
@@ -244,14 +251,17 @@ void atencionesPorProfesional() {
     printf("El profesional %s tiene %d atenciones en el mes %d.\n", usuarioProfesional, contadorAtenciones, mes);
 }
 
-typedef struct {
+typedef struct
+{
     char usuario[MAX_NOMBRE_LENGTH];
     int atenciones;
 } ProfesionalAtencion;
 
-void rankingProfesionales() {
+void rankingProfesionales()
+{
     FILE *archivo = fopen("turnos.dat", "rb");
-    if (archivo == NULL) {
+    if (archivo == NULL)
+    {
         printf("Error al abrir el archivo para lectura\n");
         exit(1);
     }
@@ -261,21 +271,26 @@ void rankingProfesionales() {
     Turno turno;
 
     // Inicializar el conteo de atenciones a 0 para todos los profesionales
-    for (int i = 0; i < MAX_NOMBRE_LENGTH; i++) {
+    for (int i = 0; i < MAX_NOMBRE_LENGTH; i++)
+    {
         profesionales[i].atenciones = 0;
     }
 
     // Leer turnos y contar atenciones por profesional
-    while (fread(&turno, sizeof(Turno), 1, archivo)) {
+    while (fread(&turno, sizeof(Turno), 1, archivo))
+    {
         int encontrado = 0;
-        for (int i = 0; i < numProfesionales; i++) {
-            if (strcmp(profesionales[i].usuario, turno.usuario) == 0) {
+        for (int i = 0; i < numProfesionales; i++)
+        {
+            if (strcmp(profesionales[i].usuario, turno.usuario) == 0)
+            {
                 profesionales[i].atenciones++;
                 encontrado = 1;
                 break;
             }
         }
-        if (!encontrado && numProfesionales < MAX_NOMBRE_LENGTH) {
+        if (!encontrado && numProfesionales < MAX_NOMBRE_LENGTH)
+        {
             strncpy(profesionales[numProfesionales].usuario, turno.usuario, MAX_NOMBRE_LENGTH);
             profesionales[numProfesionales].atenciones = 1;
             numProfesionales++;
@@ -285,9 +300,12 @@ void rankingProfesionales() {
     fclose(archivo);
 
     // Ordenar profesionales por cantidad de atenciones
-    for (int i = 0; i < numProfesionales - 1; i++) {
-        for (int j = i + 1; j < numProfesionales; j++) {
-            if (profesionales[i].atenciones < profesionales[j].atenciones) {
+    for (int i = 0; i < numProfesionales - 1; i++)
+    {
+        for (int j = i + 1; j < numProfesionales; j++)
+        {
+            if (profesionales[i].atenciones < profesionales[j].atenciones)
+            {
                 ProfesionalAtencion temp = profesionales[i];
                 profesionales[i] = profesionales[j];
                 profesionales[j] = temp;
@@ -297,7 +315,8 @@ void rankingProfesionales() {
 
     // Mostrar ranking
     printf("Ranking de Profesionales por Atenciones:\n");
-    for (int i = 0; i < numProfesionales; i++) {
+    for (int i = 0; i < numProfesionales; i++)
+    {
         printf("%d. %s - %d atenciones\n", i + 1, profesionales[i].usuario, profesionales[i].atenciones);
     }
 }
