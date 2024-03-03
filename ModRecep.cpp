@@ -307,16 +307,21 @@ void generar_informe()
     scanf("%s", fecha);
 
     printf("\nListado de atenciones para el profesional %s en la fecha %s:\n", usuario, fecha);
-    printf("------------------------------------------------------------\n");
+    printf("=============================================================\n");
 
     for (int i = 0; i < contador_datos; i++)
     {
         if (strcmp(da[i].usuario, usuario) == 0 && strcmp(da[i].fecha, fecha) == 0)
         {
-            printf("Paciente: %s\n", da[i].dniPaciente);
+            for (int j = 0; j < contador_paciente; j++)
+            {
+                if (strcmp(da[i].dniPaciente, pa[j].dni) == 0)
+                {
+                    printf("Paciente: %s %s\n", pa[j].name, pa[j].apellido);
+                }
+            }
         }
     }
-    printf("------------------------------------------------------------\n");
 }
 
 int main()
