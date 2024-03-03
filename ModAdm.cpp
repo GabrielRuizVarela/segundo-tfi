@@ -199,7 +199,7 @@ void validarUsuarioContrasenia(int rol)
     }
 }
 
-void registrarAtencion()
+void registrar_atencion()
 {
 
     printf("Ingrese el nombre del profesional que realizo la atencion: ");
@@ -313,6 +313,7 @@ int menu()
     printf("2- Registrar Usuario Recepcionista\n");
     printf("3- Atenciones por profesional\n");
     printf("4- Ranking de Profesionales por Atenciones\n");
+    printf("5- Registrar Atencion\n");
     printf("0- Cerrar la aplicacion.\n");
     printf("\nIngrese una opcion:\n ");
     scanf("%d", &opcion);
@@ -348,6 +349,11 @@ int main()
         case 4:
         {
             rankingProfesionales();
+            break;
+        }
+        case 5:
+        {
+            registrar_atencion();
             break;
         }
         case 0:

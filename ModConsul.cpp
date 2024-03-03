@@ -10,11 +10,6 @@ struct Fecha
     int anio;
 };
 
-struct usuarios
-{
-    char usuario[10];
-    char contrasenia[32];
-};
 struct registro
 {
     char ApeNomP[60];

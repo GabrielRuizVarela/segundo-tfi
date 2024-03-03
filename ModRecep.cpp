@@ -21,11 +21,11 @@ Turno da[MAX_DATOS];
 int contador_datos = 0;
 
 // Función para buscar un usuario por nombre y verificar si es médico
-int buscar_indice_profesional(const char *nombreProfesional)
+int buscar_indice_profesional(const char *usuarioProfesional)
 {
     for (int i = 0; i < contador_usuario; i++)
     {
-        if (strcmp(us[i].usuario, nombreProfesional) == 0 && us[i].rol == 1)
+        if (strcmp(us[i].usuario, usuarioProfesional) == 0 && us[i].rol == 1)
         {
             return i; // Retorna el índice del usuario si es médico
         }
@@ -51,7 +51,7 @@ int verificar_turno_existente(const char *profesional, const char *fecha)
 {
     for (int i = 0; i < contador_datos; i++)
     {
-        if (strcmp(da[i].profesional, profesional) == 0 && strcmp(da[i].fecha, fecha) == 0)
+        if (strcmp(da[i].usuario, profesional) == 0 && strcmp(da[i].fecha, fecha) == 0)
         {
             return 1; // Turno ya existe
         }
@@ -110,9 +110,11 @@ void iniciar_sesion()
     }
 }
 
-void guardar_usuarios(Usuario *usuarios, int contador, const char *archivo) {
+void guardar_usuarios(Usuario *usuarios, int contador, const char *archivo)
+{
     FILE *file = fopen(archivo, "wb");
-    if (file == NULL) {
+    if (file == NULL)
+    {
         printf("Error al abrir el archivo %s.\n", archivo);
         return;
     }
@@ -120,11 +122,14 @@ void guardar_usuarios(Usuario *usuarios, int contador, const char *archivo) {
     fclose(file);
 }
 
-void cargar_usuarios(Usuario *usuarios, int *contador, const char *archivo) {
+void cargar_usuarios(Usuario *usuarios, int *contador, const char *archivo)
+{
     FILE *file = fopen(archivo, "rb");
-    if (file == NULL) {
+    if (file == NULL)
+    {
         file = fopen(archivo, "wb");
-        if (file == NULL) {
+        if (file == NULL)
+        {
             printf("Error al abrir el archivo %s.\n", archivo);
         }
         *contador = 0; // Asegurar que el contador es 0 si el archivo no existe
@@ -134,9 +139,11 @@ void cargar_usuarios(Usuario *usuarios, int *contador, const char *archivo) {
     fclose(file);
 }
 
-void guardar_pacientes(Paciente *pacientes, int contador, const char *archivo) {
+void guardar_pacientes(Paciente *pacientes, int contador, const char *archivo)
+{
     FILE *file = fopen(archivo, "wb");
-    if (file == NULL) {
+    if (file == NULL)
+    {
         printf("Error al abrir el archivo %s para guardar.\n", archivo);
         return;
     }
@@ -144,11 +151,14 @@ void guardar_pacientes(Paciente *pacientes, int contador, const char *archivo) {
     fclose(file);
 }
 
-void cargar_pacientes(Paciente *pacientes, int *contador, const char *archivo) {
+void cargar_pacientes(Paciente *pacientes, int *contador, const char *archivo)
+{
     FILE *file = fopen(archivo, "rb");
-    if (file == NULL) {
+    if (file == NULL)
+    {
         file = fopen(archivo, "wb");
-        if (file == NULL) {
+        if (file == NULL)
+        {
             printf("Error al abrir el archivo %s para cargar.\n", archivo);
         }
         *contador = 0; // Asegurar que el contador es 0 si el archivo no existe
@@ -158,9 +168,11 @@ void cargar_pacientes(Paciente *pacientes, int *contador, const char *archivo) {
     fclose(file);
 }
 
-void guardar_turnos(Turno *turnos, int contador, const char *archivo) {
+void guardar_turnos(Turno *turnos, int contador, const char *archivo)
+{
     FILE *file = fopen(archivo, "wb");
-    if (file == NULL) {
+    if (file == NULL)
+    {
         printf("Error al abrir el archivo %s para guardar.\n", archivo);
         return;
     }
@@ -168,12 +180,15 @@ void guardar_turnos(Turno *turnos, int contador, const char *archivo) {
     fclose(file);
 }
 
-void cargar_turnos(Turno *turnos, int *contador, const char *archivo) {
+void cargar_turnos(Turno *turnos, int *contador, const char *archivo)
+{
     FILE *file = fopen(archivo, "rb");
-    if (file == NULL) {
+    if (file == NULL)
+    {
         // crea el archivo si no existe
         file = fopen(archivo, "wb");
-        if (file == NULL) {
+        if (file == NULL)
+        {
             printf("Error al abrir el archivo %s para cargar.\n", archivo);
         }
         *contador = 0; // Asegurar que el contador es 0 si el archivo no existe
@@ -244,12 +259,12 @@ void agregar_turno()
     }
 
     Turno nuevoTurno;
-    printf("\nIngrese el nombre de usuario del profesional de la salud (médico): ");
-    scanf("%s", nuevoTurno.profesional);
+    printf("\nIngrese usuario del profesional de la salud (médico): ");
+    scanf("%s", nuevoTurno.usuario);
     getchar();
 
     // Validar la existencia del profesional
-    int indiceProfesional = buscar_indice_profesional(nuevoTurno.profesional);
+    int indiceProfesional = buscar_indice_profesional(nuevoTurno.usuario);
     if (indiceProfesional == -1)
     {
         printf("Profesional de la salud no encontrado o no es un médico válido.\n");
@@ -262,7 +277,7 @@ void agregar_turno()
     fgets(nuevoTurno.fecha, MAX_NOMBRE_LENGTH, stdin);
     nuevoTurno.fecha[strcspn(nuevoTurno.fecha, "\n")] = '\0'; // Eliminar el salto de línea al final
 
-    if (verificar_turno_existente(nuevoTurno.profesional, nuevoTurno.fecha))
+    if (verificar_turno_existente(nuevoTurno.usuario, nuevoTurno.fecha))
     {
         printf("Error: Ya existe un turno para el profesional en la fecha indicada.\n");
         return;
@@ -283,32 +298,26 @@ void agregar_turno()
 // Funci�n para generar un informe de pacientes atendidos por un profesional en una fecha espec�fica.
 void generar_informe()
 {
-    char profesional[MAX_NOMBRE_LENGTH];
+    char usuario[MAX_NOMBRE_LENGTH];
     char fecha[MAX_NOMBRE_LENGTH];
 
-    printf("\nIngrese el nombre del profesional de la salud (medico): ");
-    scanf("%s", profesional);
+    printf("\nIngrese el usuario del profesional de la salud (medico): ");
+    scanf("%s", usuario);
 
-    printf("Ingrese la fecha para el informe: ");
+    printf("Ingrese la fecha del informe (DD/MM/YYYY): ");
     scanf("%s", fecha);
 
-    printf("\nInforme de pacientes atendidos el %s por el profesional %s:\n", fecha, profesional);
+    printf("\nListado de atenciones para el profesional %s en la fecha %s:\n", usuario, fecha);
+    printf("------------------------------------------------------------\n");
 
-    int bandera = 0;
     for (int i = 0; i < contador_datos; i++)
     {
-        if (strcmp(da[i].profesional, profesional) == 0 &&
-            strcmp(da[i].fecha, fecha) == 0)
+        if (strcmp(da[i].usuario, usuario) == 0 && strcmp(da[i].fecha, fecha) == 0)
         {
-            printf("- Paciente: %s\n", da[i].paciente);
-            bandera = 1;
+            printf("Paciente: %s\n", da[i].paciente);
         }
     }
-
-    if (!bandera)
-    {
-        printf("No se encontraron pacientes atendidos por el profesional %s en la fecha %s.\n", profesional, fecha);
-    }
+    printf("------------------------------------------------------------\n");
 }
 
 int main()

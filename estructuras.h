@@ -76,10 +76,9 @@ typedef struct
     char telefono[MAX_NOMBRE_LENGTH];
 } Profesional;
 
-
 typedef struct
 {
-    char profesional[MAX_NOMBRE_LENGTH];
+    char usuario[MAX_NOMBRE_LENGTH];
     char paciente[MAX_NOMBRE_LENGTH];
     char fecha[MAX_NOMBRE_LENGTH];
 } Turno;
