@@ -4,6 +4,14 @@
 #define MAX_CONTRASENIA_LENGTH 50
 #define MAX_NOMBRE_LENGTH 50
 
+typedef struct {
+    char dniPaciente[MAX_NOMBRE_LENGTH]; // DNI del paciente para vincular la historia
+    char fechaAtencion[MAX_NOMBRE_LENGTH]; // Fecha en que se atendió al paciente
+    char usuario[MAX_NOMBRE_LENGTH]; // Usuario que atendió al paciente
+    char notaHistoria[381]; // Notas de la historia clínica, hasta 380 caracteres
+} HistoriaClinica;
+
+
 // // ADNINISTRACION
 // struct User
 // {

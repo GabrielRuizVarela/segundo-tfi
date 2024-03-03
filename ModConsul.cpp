@@ -106,50 +106,77 @@ void registrarUsuario()
     fwrite(&res[0], sizeof(struct registro), 1, file);
     fclose(file);
 }
-void VisualizarLista()
+
+void removerPaciente(HistoriaClinica hc)
 {
-    FILE *file = fopen("consultorios.dat", "r+b");
-    registro res;
-    int eleccion;
-    printf("Desea visualizar datos (1-si || 2-no): ");
-    scanf("%d", &eleccion);
+    Turno nuevoTurnosEncontrados[MAX_TURNOS]; // Arreglo temporal para almacenar los turnos que no se eliminarán
+    int cantidadNuevosTurnos = 0;              // Contador temporal de turnos que no se eliminarán
 
-    while (eleccion == 1)
+    for (int i = 0; i < cantidadTurnos; i++)
     {
-        printf("Nombre : ");
-        scanf("%s", &res.ApeNomP);
-        printf("Edad:");
-        scanf("%d", &res.edad);
-        printf("Domicilio: ");
-        fflush(stdin);
-        gets(res.Domicilio);
-        fwrite(&res, sizeof(struct registro), 1, file);
-
-        while (!feof(file))
+        if (strcmp(hc.dniPaciente, turnosEncontrados[i].dniPaciente) != 0 || strcmp(hc.fechaAtencion, turnosEncontrados[i].fecha) != 0)
         {
-            printf("Apellido y nombre: %s\n", res.ApeNomP);
-            printf("Edad: %d\n", res.edad);
-            printf("Domicilio: %s\n", res.Domicilio);
+            nuevoTurnosEncontrados[cantidadNuevosTurnos++] = turnosEncontrados[i]; // Almacenar el turno que no se eliminará
+        }
+    }
+
+    memcpy(turnosEncontrados, nuevoTurnosEncontrados, sizeof(nuevoTurnosEncontrados)); // Actualizar el arreglo global de turnos encontrados
+    cantidadTurnos = cantidadNuevosTurnos;       // Actualizar el contador global de turnos encontrados
+    printf("Paciente removido de la lista de espera.\n");
+}
+
+
+void registrarHistoriaClinica() {
+    HistoriaClinica hc;
+
+    printf("Registro de Historia Clínica\n");
+    printf("Ingrese DNI del paciente: ");
+    scanf("%s", hc.dniPaciente);
+    limpiar_buffer();
+
+    printf("Ingrese fecha de atención (DDMMYYYY): ");
+    scanf("%s", hc.fechaAtencion);
+    limpiar_buffer();
+
+    //validar que tiene un turno para esa fecha
+    int turnoEncontrado = 0;
+    for (int i = 0; i < cantidadTurnos; i++)
+    {
+        if (strcmp(hc.fechaAtencion, turnosEncontrados[i].fecha) == 0 && strcmp(hc.dniPaciente, turnosEncontrados[i].dniPaciente) == 0)
+        {
+            turnoEncontrado = 1;
             break;
         }
-        printf("Desea seguir visualizar datos (1-si || 2-no): ");
-        scanf("%d", &eleccion);
     }
+
+    if (!turnoEncontrado)
+    {
+        printf("No se encontró un turno para el paciente con DNI %s en la fecha %s.\n", hc.dniPaciente, hc.fechaAtencion);
+        return;
+    }
+
+    printf("Ingrese notas de la historia clínica (hasta 380 caracteres): ");
+    fgets(hc.notaHistoria, 381, stdin); 
+
+    FILE *file = fopen("historias.dat", "ab");
+    if (file == NULL)
+    {
+        file = fopen("historias.dat", "wb");
+        if (file == NULL)
+        {
+            printf("Error al abrir el archivo");
+            exit(1);
+        }
+    }
+    fwrite(&hc, sizeof(HistoriaClinica), 1, file);
     fclose(file);
-}
-void RegistrarHistoria()
-{
-    FILE *file = fopen("consultorios.dat", "r+b");
-    registro res;
-    int documento, opc;
 
-    printf("Desea registrar historia del paciente (1-si || 2-no): ");
-    scanf("%d", &opc);
-    printf("Ingrese el dni del paciente a registrar su historia:");
-    scanf("%d", &documento);
-
-    printf("El paciente de documento %d fue registrado en el hospital avellaneda por dolencias en la pierna izquierda\n", documento);
+    printf("Historia clínica registrada con éxito.\n");
+    // remover paciente de la lista de espera
+    removerPaciente(hc);
+    
 }
+
 
 int calcularEdad(const char *fechaNacimiento)
 {
