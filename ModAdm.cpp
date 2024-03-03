@@ -312,7 +312,6 @@ int menu()
     printf("2- Registrar Usuario Recepcionista\n");
     printf("3- Atenciones por profesional\n");
     printf("4- Ranking de Profesionales por Atenciones\n");
-    printf("5- Registrar Atencion\n");
     printf("0- Cerrar la aplicacion.\n");
     printf("\nIngrese una opcion:\n ");
     scanf("%d", &opcion);
