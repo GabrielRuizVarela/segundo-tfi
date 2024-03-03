@@ -218,7 +218,7 @@ int main()
             break;
         case 2:
             if (usuarioLogueado)
-                VisualizarLista();
+                turnos_del_dia();
             break;
         case 3:
             if (usuarioLogueado)
