@@ -250,6 +250,7 @@ void turnos_del_dia()
 int menu()
 {
     cargar_pacientes();
+    printf("edad: %d\n", calcularEdad("01011990"));
     int opcion;
     printf("=========================\n");
     printf("Modulo Consultorio\n");
