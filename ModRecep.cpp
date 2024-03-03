@@ -255,7 +255,6 @@ void agregar_paciente()
     printf("Paciente registrado con exito.\n");
 }
 
-// Funcion para agregar un nuevo turno.
 void agregar_turno()
 {
     if (contador_datos >= MAX_DATOS)
@@ -281,13 +280,17 @@ void agregar_turno()
 
     printf("Ingrese la fecha del turno: ");
     fgets(nuevoTurno.fecha, MAX_NOMBRE_LENGTH, stdin);
+    // Eliminar el salto de línea al final si existe
+    nuevoTurno.fecha[strcspn(nuevoTurno.fecha, "\n")] = 0;
 
     printf("Ingrese el dni del paciente: ");
     fgets(nuevoTurno.dniPaciente, MAX_NOMBRE_LENGTH, stdin);
+    // Eliminar el salto de línea al final si existe
+    nuevoTurno.dniPaciente[strcspn(nuevoTurno.dniPaciente, "\n")] = 0;
 
     if(verificar_paciente_existente(nuevoTurno.dniPaciente))
     {
-        printf("Error: No existe un paciente con el mismo DNI.\n");
+        printf("Error: El paciente con DNI %s no está registrado.\n", nuevoTurno.dniPaciente);
         return;
     }
 
@@ -295,8 +298,9 @@ void agregar_turno()
     contador_datos++;
     guardar_turnos(da, contador_datos, "turnos.dat");
 
-    printf("Turno registrado con exito.\n");
+    printf("Turno registrado con éxito.\n");
 }
+
 
 
 // Funci�n para generar un informe de pacientes atendidos por un profesional en una fecha espec�fica.
