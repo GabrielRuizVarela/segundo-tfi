@@ -17,25 +17,6 @@ int usuarioLogueado = 0; // 0: no logueado, 1: logueado
 Paciente pacientes[MAX_TURNOS]; // Arreglo global de pacientes encontrados
 int cantidadPacientes = 0;      // Contador global de pacientes encontrados
 
-struct Fecha
-{
-    int anio;
-};
-
-struct registro
-{
-    char ApeNomP[60];
-    char Domicilio[60];
-    int DniPaciente[8];
-    char Localidad[60];
-    Fecha fec;
-    int edad;
-    float peso;
-    float talla;
-    int Telefono;
-};
-Usuario res[60];
-
 void limpiar_buffer()
 {
     int c;
@@ -123,18 +104,6 @@ void Iniciarsesion()
         printf("Usuario y contraseña incorrectos\n");
         exit(1);
     }
-}
-
-void registrarUsuario()
-{
-    FILE *file = fopen("consultorios.dat", "ab");
-    if (file == NULL)
-    {
-        printf("Error al abrir el archivo");
-        exit(1);
-    }
-    fwrite(&res[0], sizeof(struct registro), 1, file);
-    fclose(file);
 }
 
 void removerPaciente(HistoriaClinica hc)
