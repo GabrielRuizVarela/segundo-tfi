@@ -313,8 +313,10 @@ void generar_informe()
     {
         if (strcmp(da[i].usuario, usuario) == 0 && strcmp(da[i].fecha, fecha) == 0)
         {
+            printf("Fecha: %s\n usuario: %s\n", da[i].fecha, da[i].usuario);
             for (int j = 0; j < contador_paciente; j++)
             {
+                printf("Paciente: %s %s\n", pa[j].name, pa[j].apellido);
                 if (strcmp(da[i].dniPaciente, pa[j].dni) == 0)
                 {
                     printf("Paciente: %s %s\n", pa[j].name, pa[j].apellido);
