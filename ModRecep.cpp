@@ -284,8 +284,8 @@ void agregar_turno()
 
     printf("Ingrese el dni del paciente: ");
     getchar();
-    fgets(da[contador_datos].dniPaciente, MAX_NOMBRE_LENGTH, stdin);
-    da[contador_datos].dniPaciente[strcspn(da[contador_datos].dniPaciente, "\n")] = '\0'; // Eliminar el salto de l�nea al final
+    fgets(nuevoTurno.dniPaciente, MAX_NOMBRE_LENGTH, stdin);
+    nuevoTurno.dniPaciente[strcspn(nuevoTurno.dniPaciente, "\n")] = '\0'; // Eliminar el salto de línea al final
 
     da[contador_datos] = nuevoTurno; // Agregar el nuevo turno
     contador_datos++;
