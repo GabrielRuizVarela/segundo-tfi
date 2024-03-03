@@ -49,19 +49,6 @@ int verificar_paciente_existente(const char *dni)
     return 0; // Paciente no existe
 }
 
-// Verificar si el turno ya existe por profesional y fecha
-int verificar_turno_existente(const char *profesional, const char *fecha)
-{
-    for (int i = 0; i < contador_datos; i++)
-    {
-        if (strcmp(da[i].usuario, profesional) == 0 && strcmp(da[i].fecha, fecha) == 0)
-        {
-            return 1; // Turno ya existe
-        }
-    }
-    return 0; // Turno no existe
-}
-
 // Funci�n para verificar el usuario y la contrasena
 int verificar_usuario(const char *username, const char *password)
 {
@@ -294,12 +281,6 @@ void agregar_turno()
     printf("Ingrese la fecha del turno: ");
     fgets(nuevoTurno.fecha, MAX_NOMBRE_LENGTH, stdin);
     nuevoTurno.fecha[strcspn(nuevoTurno.fecha, "\n")] = '\0'; // Eliminar el salto de línea al final
-
-    if (verificar_turno_existente(nuevoTurno.usuario, nuevoTurno.fecha))
-    {
-        printf("Error: Ya existe un turno para el profesional en la fecha indicada.\n");
-        return;
-    }
 
     printf("Ingrese el dni del paciente: ");
     getchar();
