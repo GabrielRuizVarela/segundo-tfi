@@ -36,6 +36,14 @@ struct registro
 };
 Usuario res[60];
 
+void limpiar_buffer()
+{
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF)
+    {
+    }
+}
+
 void cargar_pacientes()
 {
     FILE *file = fopen("pacientes.dat", "rb");
@@ -212,14 +220,6 @@ int calcularEdad(const char *fechaNacimiento)
     return edad;
 }
 
-void limpiar_buffer()
-{
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF)
-    {
-    }
-}
-
 void turnos_del_dia()
 {
     FILE *file = fopen("turnos.dat", "rb");
@@ -319,7 +319,7 @@ int main()
             break;
         case 3:
             if (usuarioLogueado)
-                RegistrarHistoria();
+                registrarHistoriaClinica();
             break;
         case 0:
             printf("Gracias por usar nuestro sistema...\n");
