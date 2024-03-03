@@ -86,6 +86,7 @@ void Iniciarsesion()
     if (encontrado)
     {
         printf("Bienvenido a nuestro sistema, %s.\n", usuarioActual.usuario);
+        cargar_pacientes();
     }
     else
     {
@@ -246,7 +247,6 @@ void turnos_del_dia()
 
 int menu()
 {
-    cargar_pacientes();
     int opcion;
     printf("=========================\n");
     printf("Modulo Consultorio\n");
