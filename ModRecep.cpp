@@ -315,7 +315,7 @@ void generar_informe()
         {
             for (int j = 0; j < contador_paciente; j++)
             {
-                printf("Paciente: %s %s\n", pa[j].dni, da[i].dniPaciente);
+                printf("TEST: %s %s\n", pa[j].dni, da[i].dniPaciente);
                 if (strcmp(da[i].dniPaciente, pa[j].dni) == 0)
                 {
                     printf("Paciente: %s %s\n", pa[j].name, pa[j].apellido);
