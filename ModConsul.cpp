@@ -62,6 +62,28 @@ void cargar_pacientes()
     fclose(file);
 }
 
+void cargar_turnos()
+{
+    FILE *file = fopen("turnos.dat", "rb");
+    if (file == NULL)
+    {
+        file = fopen("turnos.dat", "wb");
+        if (file == NULL)
+        {
+            printf("Error al abrir el archivo");
+            exit(1);
+        }
+    }
+    int encontrado = 0;
+    Turno tempTurno; // Variable temporal para leer turnos del archivo
+    while (fread(&tempTurno, sizeof(Turno), 1, file))
+    {
+        turnosEncontrados[encontrado++] = tempTurno; // Almacenar el turno encontrado
+    }
+    cantidadTurnos = encontrado;
+    fclose(file);
+}
+
 void Iniciarsesion()
 {
     char usuario[MAX_NOMBRE_LENGTH], contrasenia[MAX_CONTRASENIA_LENGTH];
@@ -222,29 +244,11 @@ int calcularEdad(const char *fechaNacimiento)
 
 void turnos_del_dia()
 {
-    FILE *file = fopen("turnos.dat", "rb");
-    if (file == NULL)
-    {
-        printf("Error al abrir el archivo\n");
-        exit(1);
-    }
 
     char fecha[MAX_NOMBRE_LENGTH];
     printf("Ingrese la fecha del turno a buscar (DDMMYYYY): ");
     scanf("%s", fecha);
     limpiar_buffer(); // Limpia el buffer después de usar scanf
-
-    cantidadTurnos = 0; // Reiniciar el contador de turnos
-    Turno turno;
-    while (fread(&turno, sizeof(Turno), 1, file) && cantidadTurnos < MAX_TURNOS)
-    {
-        if (strcmp(fecha, turno.fecha) == 0 && strcmp(usuarioActual.usuario, turno.usuario) == 0)
-        {
-            turnosEncontrados[cantidadTurnos++] = turno; // Almacenar el turno encontrado
-        }
-    }
-
-    fclose(file);
 
     // Opcional: imprimir los turnos almacenados en la variable global
     if (cantidadTurnos == 0)
@@ -298,6 +302,7 @@ int menu()
 int main()
 {
     int seleccion;
+    cargar_turnos();
     do
     {
         seleccion = menu();
