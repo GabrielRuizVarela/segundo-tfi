@@ -125,6 +125,23 @@ void guardar_usuarios(Usuario *usuarios, int contador, const char *archivo)
     fclose(file);
 }
 
+void cargar_profesionales(Usuario *usuarios, int *contador, const char *archivo)
+{
+    FILE *file = fopen(archivo, "rb");
+    if (file == NULL)
+    {
+        file = fopen(archivo, "wb");
+        if (file == NULL)
+        {
+            printf("Error al abrir el archivo %s.\n", archivo);
+        }
+        *contador = 0; // Asegurar que el contador es 0 si el archivo no existe
+        return;
+    }
+    *contador = fread(usuarios, sizeof(Usuario), MAX_USUARIO, file);
+    fclose(file);
+}
+
 void cargar_usuarios(Usuario *usuarios, int *contador, const char *archivo)
 {
     FILE *file = fopen(archivo, "rb");
