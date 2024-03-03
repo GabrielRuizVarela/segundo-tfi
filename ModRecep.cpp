@@ -28,9 +28,9 @@ int buscar_indice_profesional(const char *usuarioProfesional)
 {
     for (int i = 0; i < contador_usuario; i++)
     {
-        if (strcmp(prof[i].usuario, usuarioProfesional) == 0 && us[i].rol == 1)
+        if (strcmp(prof[i].usuario, usuarioProfesional) == 0)
         {
-            return i; // Retorna el índice del usuario si es médico
+            return 1;
         }
     }
     return -1; // Retorna -1 si no se encuentra el profesional o no es médico
@@ -287,8 +287,6 @@ void agregar_turno()
     int indiceProfesional = buscar_indice_profesional(nuevoTurno.usuario);
     if (indiceProfesional == -1)
     {
-        printf("Profesional de la salud no encontrado o no es un médico válido.\n");
-        return;
         printf("Profesional de la salud no encontrado o no es un médico válido.\n");
         return;
     }
