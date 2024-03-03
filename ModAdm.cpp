@@ -227,48 +227,49 @@ void registrar_atencion()
     printf("Atencion registrada correctamente.\n");
 }
 
-void atencionesPorProfesional()
-{
-    FILE *archivo = fopen("atenciones.dat", "r+b");
-    if (archivo == NULL)
-    {
-        printf("Error al abrir el archivo para lectura");
-        exit(1);
+void limpiar_buffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF) { }
+}
+
+int extraer_mes(const char* fecha) {
+    char strMes[3]; // Necesitamos solo dos caracteres para el mes, más el carácter nulo
+    strncpy(strMes, fecha + 2, 2); // Copiamos los caracteres correspondientes al mes
+    strMes[2] = '\0'; // Aseguramos que la cadena esté correctamente terminada
+    return atoi(strMes); // Convertimos la cadena del mes a entero
+}
+
+void atencionesPorProfesional() {
+    FILE *archivo = fopen("turnos.dat", "rb"); // Asegúrate de abrir en modo lectura binaria
+    if (archivo == NULL) {
+        printf("Error al abrir el archivo para lectura.\n");
+        exit(1); // Considera manejar el error de manera diferente para no terminar abruptamente
     }
 
-    char nombreProfesional[50];
-    int mes;
+    char usuarioProfesional[MAX_NOMBRE_LENGTH];
+    int mes, contadorAtenciones = 0;
 
-    printf("Ingrese el nombre del profesional: ");
-    scanf("%s", nombreProfesional);
+    printf("Ingrese el usuario del profesional: ");
+    scanf("%s", usuarioProfesional);
+    limpiar_buffer(); // Limpia el buffer después de usar scanf
 
     printf("Ingrese el mes (1-12): ");
     scanf("%d", &mes);
+    limpiar_buffer(); // Limpia el buffer después de usar scanf
 
-    int totalAtenciones = 0, encontrado = 0;
+    Turno turno;
 
-    fread(&cantidadAtenciones, sizeof(int), 1, archivo);
+    while (fread(&turno, sizeof(Turno), 1, archivo)) {
+        int mesTurno = extraer_mes(turno.fecha);
 
-    for (int i = 0; i < cantidadAtenciones; i++)
-    {
-        fread(&atenciones[i], sizeof(struct Atencion), 1, archivo);
-
-        if (strcmp(atenciones[i].nombreProfesional, nombreProfesional) == 0 && atenciones[i].mes == mes)
-        {
-            totalAtenciones += atenciones[i].cantidadAtenciones;
-            encontrado = 1;
-            break;
+        if (strcmp(turno.usuario, usuarioProfesional) == 0 && mes == mesTurno) {
+            contadorAtenciones++;
         }
     }
+
     fclose(archivo);
-    if (encontrado)
-    {
-        printf("El profesional %s realizo %d atenciones en el mes %d.\n", nombreProfesional, totalAtenciones, mes);
-    }
-    else
-    {
-        printf("No se encontraron atenciones para %s en el mes %d.\n", nombreProfesional, mes);
-    }
+
+    printf("El profesional %s tiene %d atenciones en el mes %d.\n", usuarioProfesional, contadorAtenciones, mes);
 }
 
 void rankingProfesionales()
