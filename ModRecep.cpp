@@ -282,14 +282,8 @@ void agregar_turno()
     printf("Ingrese la fecha del turno: ");
     fgets(nuevoTurno.fecha, MAX_NOMBRE_LENGTH, stdin);
 
-    // Limpiar el búfer de entrada para eliminar el carácter de nueva línea después de scanf
-    while (getchar() != '\n');
-
     printf("Ingrese el dni del paciente: ");
     fgets(nuevoTurno.dniPaciente, MAX_NOMBRE_LENGTH, stdin);
-
-    // Limpiar el búfer de entrada para eliminar el carácter de nueva línea después de scanf
-    while (getchar() != '\n');
 
     if(verificar_paciente_existente(nuevoTurno.dniPaciente))
     {
