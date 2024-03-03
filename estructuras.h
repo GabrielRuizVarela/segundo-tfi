@@ -79,6 +79,6 @@ typedef struct
 typedef struct
 {
     char usuario[MAX_NOMBRE_LENGTH];
-    char paciente[MAX_NOMBRE_LENGTH];
+    char dniPaciente[MAX_NOMBRE_LENGTH];
     char fecha[MAX_NOMBRE_LENGTH];
 } Turno;

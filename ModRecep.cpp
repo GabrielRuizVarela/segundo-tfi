@@ -20,12 +20,15 @@ int contador_paciente = 0;
 Turno da[MAX_DATOS];
 int contador_datos = 0;
 
+Usuario prof[MAX_USUARIO];
+int contador_profesional = 0;
+
 // Función para buscar un usuario por nombre y verificar si es médico
 int buscar_indice_profesional(const char *usuarioProfesional)
 {
     for (int i = 0; i < contador_usuario; i++)
     {
-        if (strcmp(us[i].usuario, usuarioProfesional) == 0 && us[i].rol == 1)
+        if (strcmp(prof[i].usuario, usuarioProfesional) == 0 && us[i].rol == 1)
         {
             return i; // Retorna el índice del usuario si es médico
         }
@@ -283,10 +286,10 @@ void agregar_turno()
         return;
     }
 
-    printf("Ingrese el nombre del paciente: ");
+    printf("Ingrese el dni del paciente: ");
     getchar();
-    fgets(da[contador_datos].paciente, MAX_NOMBRE_LENGTH, stdin);
-    da[contador_datos].paciente[strcspn(da[contador_datos].paciente, "\n")] = '\0'; // Eliminar el salto de l�nea al final
+    fgets(da[contador_datos].dniPaciente, MAX_NOMBRE_LENGTH, stdin);
+    da[contador_datos].dniPaciente[strcspn(da[contador_datos].dniPaciente, "\n")] = '\0'; // Eliminar el salto de l�nea al final
 
     da[contador_datos] = nuevoTurno; // Agregar el nuevo turno
     contador_datos++;
@@ -314,7 +317,7 @@ void generar_informe()
     {
         if (strcmp(da[i].usuario, usuario) == 0 && strcmp(da[i].fecha, fecha) == 0)
         {
-            printf("Paciente: %s\n", da[i].paciente);
+            printf("Paciente: %s\n", da[i].dniPaciente);
         }
     }
     printf("------------------------------------------------------------\n");
@@ -323,6 +326,7 @@ void generar_informe()
 int main()
 {
     cargar_usuarios(us, &contador_usuario, "recepcionistas.dat");
+    cargar_profesionales(prof, &contador_profesional, "profesionales.dat");
     cargar_pacientes(pa, &contador_paciente, "pacientes.dat");
     cargar_turnos(da, &contador_datos, "turnos.dat");
     int opcion;
