@@ -258,7 +258,6 @@ void agregar_paciente()
 // Funcion para agregar un nuevo turno.
 void agregar_turno()
 {
-
     if (contador_datos >= MAX_DATOS)
     {
         printf("No se pueden agregar más turnos. Límite alcanzado.\n");
@@ -268,7 +267,9 @@ void agregar_turno()
     Turno nuevoTurno;
     printf("\nIngrese usuario del profesional de la salud (médico): ");
     scanf("%s", nuevoTurno.usuario);
-    getchar();
+    
+    // Limpiar el búfer de entrada para eliminar el carácter de nueva línea después de scanf
+    while (getchar() != '\n');
 
     // Validar la existencia del profesional
     int indiceProfesional = buscar_indice_profesional(nuevoTurno.usuario);
@@ -279,11 +280,12 @@ void agregar_turno()
     }
 
     printf("Ingrese la fecha del turno: ");
-    getchar();
     fgets(nuevoTurno.fecha, MAX_NOMBRE_LENGTH, stdin);
 
+    // Limpiar el búfer de entrada para eliminar el carácter de nueva línea después de scanf
+    while (getchar() != '\n');
+
     printf("Ingrese el dni del paciente: ");
-    getchar();
     fgets(nuevoTurno.dniPaciente, MAX_NOMBRE_LENGTH, stdin);
 
     da[contador_datos] = nuevoTurno; // Agregar el nuevo turno
@@ -292,6 +294,7 @@ void agregar_turno()
 
     printf("Turno registrado con exito.\n");
 }
+
 
 // Funci�n para generar un informe de pacientes atendidos por un profesional en una fecha espec�fica.
 void generar_informe()
