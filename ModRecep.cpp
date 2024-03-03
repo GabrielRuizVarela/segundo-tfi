@@ -23,6 +23,10 @@ int contador_datos = 0;
 Usuario prof[MAX_USUARIO];
 int contador_profesional = 0;
 
+void limpiar_buffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF) { }
+}
 // Función para buscar un usuario por nombre y verificar si es médico
 int buscar_indice_profesional(const char *usuarioProfesional)
 {
@@ -264,6 +268,7 @@ void agregar_turno()
     }
 
     Turno nuevoTurno;
+    limpiar_buffer();
     printf("\nIngrese usuario del profesional de la salud (médico): ");
     fgets(nuevoTurno.usuario, MAX_NOMBRE_LENGTH, stdin);
     // Eliminar el salto de línea al final si existe
