@@ -49,6 +49,7 @@ void cargar_pacientes()
     while (fread(&tempPaciente, sizeof(Paciente), 1, file))
     {
         pacientes[cantidadPacientes++] = tempPaciente; // Almacenar el paciente encontrado
+        cantidadPacientes++;
     }
     fclose(file);
 }
