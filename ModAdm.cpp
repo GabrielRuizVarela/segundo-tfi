@@ -199,34 +199,6 @@ void validarUsuarioContrasenia(int rol)
     }
 }
 
-void registrar_atencion()
-{
-
-    printf("Ingrese el nombre del profesional que realizo la atencion: ");
-    fflush(stdin);
-    scanf("%s", atenciones[cantidadAtenciones].nombreProfesional);
-
-    printf("Ingrese el mes (1-12): ");
-    scanf("%d", &atenciones[cantidadAtenciones].mes);
-
-    printf("Ingrese la cantidad de atenciones: ");
-    scanf("%d", &atenciones[cantidadAtenciones].cantidadAtenciones);
-
-    cantidadAtenciones++;
-
-    FILE *archivo = fopen("atenciones.dat", "w+b");
-    if (archivo == NULL)
-    {
-        printf("Error al abrir el archivo para escritura");
-        exit(1);
-    }
-    fwrite(&cantidadAtenciones, sizeof(int), 1, archivo);
-    fwrite(atenciones, sizeof(struct Atencion), cantidadAtenciones, archivo);
-
-    fclose(archivo);
-    printf("Atencion registrada correctamente.\n");
-}
-
 void limpiar_buffer() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF) { }
@@ -376,11 +348,6 @@ int main()
         case 4:
         {
             rankingProfesionales();
-            break;
-        }
-        case 5:
-        {
-            registrar_atencion();
             break;
         }
         case 0:
