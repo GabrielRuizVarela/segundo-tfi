@@ -109,7 +109,7 @@ void Iniciarsesion()
 void removerPaciente(HistoriaClinica hc)
 {
     Turno nuevoTurnosEncontrados[MAX_TURNOS]; // Arreglo temporal para almacenar los turnos que no se eliminarán
-    int cantidadNuevosTurnos = 0;              // Contador temporal de turnos que no se eliminarán
+    int cantidadNuevosTurnos = 0;             // Contador temporal de turnos que no se eliminarán
 
     for (int i = 0; i < cantidadTurnos; i++)
     {
@@ -120,12 +120,25 @@ void removerPaciente(HistoriaClinica hc)
     }
 
     memcpy(turnosEncontrados, nuevoTurnosEncontrados, sizeof(nuevoTurnosEncontrados)); // Actualizar el arreglo global de turnos encontrados
-    cantidadTurnos = cantidadNuevosTurnos;       // Actualizar el contador global de turnos encontrados
+    cantidadTurnos = cantidadNuevosTurnos;                                             // Actualizar el contador global de turnos encontrados
+
+    FILE *file = fopen("turnos.dat", "wb");
+    if (file == NULL)
+    {
+        printf("Error al abrir el archivo");
+        exit(1);
+    }
+    for (int i = 0; i < cantidadTurnos; i++)
+    {
+        fwrite(&turnosEncontrados[i], sizeof(Turno), 1, file);
+    }
+    fclose(file);
+
     printf("Paciente removido de la lista de espera.\n");
 }
 
-
-void registrarHistoriaClinica() {
+void registrarHistoriaClinica()
+{
     HistoriaClinica hc;
 
     printf("Registro de Historia Clínica\n");
@@ -137,7 +150,7 @@ void registrarHistoriaClinica() {
     scanf("%s", hc.fechaAtencion);
     limpiar_buffer();
 
-    //validar que tiene un turno para esa fecha
+    // validar que tiene un turno para esa fecha
     int turnoEncontrado = 0;
     for (int i = 0; i < cantidadTurnos; i++)
     {
@@ -155,7 +168,7 @@ void registrarHistoriaClinica() {
     }
 
     printf("Ingrese notas de la historia clínica (hasta 380 caracteres): ");
-    fgets(hc.notaHistoria, 381, stdin); 
+    fgets(hc.notaHistoria, 381, stdin);
 
     FILE *file = fopen("historias.dat", "ab");
     if (file == NULL)
@@ -173,9 +186,7 @@ void registrarHistoriaClinica() {
     printf("Historia clínica registrada con éxito.\n");
     // remover paciente de la lista de espera
     removerPaciente(hc);
-    
 }
-
 
 int calcularEdad(const char *fechaNacimiento)
 {
