@@ -272,36 +272,62 @@ void atencionesPorProfesional() {
     printf("El profesional %s tiene %d atenciones en el mes %d.\n", usuarioProfesional, contadorAtenciones, mes);
 }
 
-void rankingProfesionales()
-{
-    FILE *archivo = fopen("atenciones.dat", "r+b");
-    if (archivo == NULL)
-    {
+typedef struct {
+    char usuario[MAX_NOMBRE_LENGTH];
+    int atenciones;
+} ProfesionalAtencion;
+
+void rankingProfesionales() {
+    FILE *archivo = fopen("turnos.dat", "rb");
+    if (archivo == NULL) {
         printf("Error al abrir el archivo para lectura\n");
         exit(1);
     }
-    fread(&cantidadAtenciones, sizeof(int), 1, archivo);
 
-    fread(atenciones, sizeof(struct Atencion), cantidadAtenciones, archivo);
+    ProfesionalAtencion profesionales[MAX_NOMBRE_LENGTH];
+    int numProfesionales = 0;
+    Turno turno;
+
+    // Inicializar el conteo de atenciones a 0 para todos los profesionales
+    for (int i = 0; i < MAX_NOMBRE_LENGTH; i++) {
+        profesionales[i].atenciones = 0;
+    }
+
+    // Leer turnos y contar atenciones por profesional
+    while (fread(&turno, sizeof(Turno), 1, archivo)) {
+        int encontrado = 0;
+        for (int i = 0; i < numProfesionales; i++) {
+            if (strcmp(profesionales[i].usuario, turno.usuario) == 0) {
+                profesionales[i].atenciones++;
+                encontrado = 1;
+                break;
+            }
+        }
+        if (!encontrado && numProfesionales < MAX_NOMBRE_LENGTH) {
+            strncpy(profesionales[numProfesionales].usuario, turno.usuario, MAX_NOMBRE_LENGTH);
+            profesionales[numProfesionales].atenciones = 1;
+            numProfesionales++;
+        }
+    }
 
     fclose(archivo);
 
-    if (cantidadAtenciones == 0)
-    {
-        printf("No hay atenciones registradas.\n");
-    }
-    char nombreProfesionalMasAtenciones[50];
-    int maxAtenciones = 0;
-
-    for (int i = 0; i < cantidadAtenciones; i++)
-    {
-        if (atenciones[i].cantidadAtenciones > maxAtenciones)
-        {
-            maxAtenciones = atenciones[i].cantidadAtenciones;
-            strcpy(nombreProfesionalMasAtenciones, atenciones[i].nombreProfesional);
+    // Ordenar profesionales por cantidad de atenciones
+    for (int i = 0; i < numProfesionales - 1; i++) {
+        for (int j = i + 1; j < numProfesionales; j++) {
+            if (profesionales[i].atenciones < profesionales[j].atenciones) {
+                ProfesionalAtencion temp = profesionales[i];
+                profesionales[i] = profesionales[j];
+                profesionales[j] = temp;
+            }
         }
     }
-    printf("Profesional con mas atenciones: %s (Cantidad: %d)\n", nombreProfesionalMasAtenciones, maxAtenciones);
+
+    // Mostrar ranking
+    printf("Ranking de Profesionales por Atenciones:\n");
+    for (int i = 0; i < numProfesionales; i++) {
+        printf("%d. %s - %d atenciones\n", i + 1, profesionales[i].usuario, profesionales[i].atenciones);
+    }
 }
 
 int menu()
