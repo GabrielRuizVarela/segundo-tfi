@@ -181,9 +181,6 @@ int calcularEdad(const char *fechaNacimiento)
         edad--; // Restar un año si no ha cumplido años aún
     }
 
-    // debug print 
-    printf("Fecha de nacimiento: %s\n", fechaNacimiento);
-    printf("Edad: %d\n", edad);
     return edad;
 }
 
@@ -228,7 +225,7 @@ void turnos_del_dia()
     }
     else
     {
-        int edad;
+        int edad = 0;
         printf("Turnos encontrados para %s en la fecha %s:\n", usuarioActual.usuario, fecha);
         for (int i = 0; i < cantidadTurnos; i++)
         {
@@ -239,7 +236,7 @@ void turnos_del_dia()
                 {
                     edad = calcularEdad(pacientes[j].fecha);
                     printf("TURNO %d:\n", i + 1);
-                    printf("Paciente: %s %s edad: %s\n", pacientes[j].name, pacientes[j].apellido, edad);
+                    printf("Paciente: %s %s edad: %d\n", pacientes[j].name, pacientes[j].apellido, edad);
                     break;
                 }
             }
@@ -250,7 +247,6 @@ void turnos_del_dia()
 int menu()
 {
     cargar_pacientes();
-    printf("edad: %d\n", calcularEdad("01011990"));
     int opcion;
     printf("=========================\n");
     printf("Modulo Consultorio\n");
