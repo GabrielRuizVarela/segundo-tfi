@@ -265,11 +265,10 @@ void agregar_turno()
 
     Turno nuevoTurno;
     printf("\nIngrese usuario del profesional de la salud (médico): ");
-    scanf("%s", nuevoTurno.usuario);
+    fgets(nuevoTurno.usuario, MAX_NOMBRE_LENGTH, stdin);
+    // Eliminar el salto de línea al final si existe
+    nuevoTurno.usuario[strcspn(nuevoTurno.usuario, "\n")] = 0;
     
-    // Limpiar el búfer de entrada para eliminar el carácter de nueva línea después de scanf
-    while (getchar() != '\n');
-
     // Validar la existencia del profesional
     int indiceProfesional = buscar_indice_profesional(nuevoTurno.usuario);
     if (indiceProfesional == -1)
