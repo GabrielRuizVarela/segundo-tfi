@@ -122,17 +122,17 @@ void removerPaciente(HistoriaClinica hc)
     memcpy(turnosEncontrados, nuevoTurnosEncontrados, sizeof(nuevoTurnosEncontrados)); // Actualizar el arreglo global de turnos encontrados
     cantidadTurnos = cantidadNuevosTurnos;                                             // Actualizar el contador global de turnos encontrados
 
-    FILE *file = fopen("turnos.dat", "wb");
-    if (file == NULL)
-    {
-        printf("Error al abrir el archivo");
-        exit(1);
-    }
-    for (int i = 0; i < cantidadTurnos; i++)
-    {
-        fwrite(&turnosEncontrados[i], sizeof(Turno), 1, file);
-    }
-    fclose(file);
+    // FILE *file = fopen("turnos.dat", "wb");
+    // if (file == NULL)
+    // {
+    //     printf("Error al abrir el archivo");
+    //     exit(1);
+    // }
+    // for (int i = 0; i < cantidadTurnos; i++)
+    // {
+    //     fwrite(&turnosEncontrados[i], sizeof(Turno), 1, file);
+    // }
+    // fclose(file);
 
     printf("Paciente removido de la lista de espera.\n");
 }
